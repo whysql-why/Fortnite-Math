@@ -17,3 +17,9 @@ username issue will never be fixed.
 - added victory royale image and the animation at the end.
 - added player counter below the map. ( added the image as well with it )
 - added some more messages to the messages.yml.
+
+2024-12-29:
+- added more comments
+- uploaded code to github
+- removed random_1.py file along with its functions: random_bad_guy(), was just useless, use AssetManagement.better_bad_guy_generator() instead.
+- added more comments to each file. 

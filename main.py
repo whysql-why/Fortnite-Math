@@ -1,6 +1,6 @@
 print("Hello world!")
 import os
-# os.system('pip install pyyaml')
+# os.system('pip install pyyaml') <-- for CODEHS
 from libs import data
 from libs import question
 from libs import random_1
@@ -14,11 +14,6 @@ import threading, time
 # data.write("hello!", "log.txt")
 # data.read("log.txt")
 
-# random_1.random_bad_guy() <-- returns random bad guy
-# yeah, this random_bad_guy() is just useless.
-# will not work in the future.( will be removed )
-
-
 # <<<< Let's talk about setting different functions for different modes or states of the game
 # yes done
 
@@ -28,37 +23,38 @@ import threading, time
 # FPS lag, is not due to the name loading. It's based on computer preformance. Loading this program in my PC, works perfectly, 60 FPS always.
 # loading this program, in codeHS(guessing running in docker) the hardware is not going to be good. minimum 500mb of ram.
 
-os.environ['SDL_AUDIODRIVER'] = 'dsp'
-pygame.display.set_caption('FORTNITE BY EPIK GAMES')
-pygame.init()
-pygame.font.init()
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode( (500 , 330) )
+os.environ['SDL_AUDIODRIVER'] = 'dsp' # sound driver for CODEHS
+pygame.display.set_caption('FORTNITE BY EPIK GAMES') # title of the game, this will be shown in the window
+pygame.init() # initialize pygame
+pygame.font.init() # initialize font
+clock = pygame.time.Clock() # clock for the game
+screen = pygame.display.set_mode( (500 , 330) ) # screen size
 font = pygame.font.Font(None, 20) # for thanking bus driver
-if(config.get_config()[0]['log-everything']):
+if(config.get_config()[0]['log-everything']): # check if the log-everything is enabled in the config 
     print("\nTIP: If you see black screen, \nRestart the game!")
     print("Your Graphics Screen might not be loaded properly.")
     print("Or You just enabled graphics screen as the program was running,")
     print("In that case, please restart the game!")
 
+# backgrounds init
+intro_background = pygame.image.load( 'assets/fortnite_menu.png' ) # load
+intro_background = pygame.transform.scale( intro_background, ( 500,330 )) # scale 
 
-intro_background = pygame.image.load( 'assets/fortnite_menu.png' )
-intro_background = pygame.transform.scale( intro_background, ( 500,330 ))
-
-main_background = pygame.image.load( 'assets/island.png' )
-main_background = pygame.transform.scale( main_background, ( 500,330 ))
+main_background = pygame.image.load( 'assets/island.png' ) # load
+main_background = pygame.transform.scale( main_background, ( 500,330 )) # scale
 
 # victory royale
-victory_royale = pygame.image.load("assets/victory.png")
-victory_royale = pygame.transform.scale(victory_royale, (360, 72))
+victory_royale = pygame.image.load("assets/victory.png") # load
+victory_royale = pygame.transform.scale(victory_royale, (360, 72)) # scale
 
 # clouds
-clouds = pygame.image.load("assets/clouds.png")
-clouds = pygame.transform.scale(clouds, (500, 150))
+clouds = pygame.image.load("assets/clouds.png") # load 
+clouds = pygame.transform.scale(clouds, (500, 150)) # scale
 clouds_x = 0
 
-background = False
 # game state controls
+
+background = False
 game_ready = False
 bus_starting = False
 dead = None
@@ -69,11 +65,29 @@ username_end = False
 player_joined = False
 get_bad_guy = False
 currently = None
-
 weapon_has = False
 global_weapon = None
 Hand = False
 spawn_enemy = False
+question_hold = ["0","0","0"]
+questions_answered = 0 
+TOTAL_QUESTIONS = 8
+jumping = False
+
+# animation vars, this was never used since the animation was not working.
+player_run = 0
+draw_player_jumping_var = [False, 0, 0]
+player_jumping_question = False
+game_start = False
+inventory = [] # inventory storage. for weapon management.
+all_usernames = []
+usernames_number = 0
+username_counter = 0
+
+# weapon handler vars
+current_weapon = None
+current_weapon_rect = None
+
 
 # setup battle bus
 battle_bus = pygame.image.load('assets/battle_bus.png')
@@ -82,17 +96,14 @@ battle_bus_rectangle = battle_bus.get_rect()
 battle_bus_rectangle.x = 0
 battle_bus_rectangle.y = 0
 # bad guys vars
-question_hold = ["0","0","0"]
-questions_answered = 0 
-TOTAL_QUESTIONS = 8
-
 
 # setup bad guys
 building_guy = pygame.image.load("bad-guys/building_guy.png")
-guy_emote_sprite = [ # why did I think this was a good idea? pygame is so bad.
+guy_emote_sprite = [ # why did I think this was a good idea? pygame is so bad with this.
     pygame.image.load("assets/guy_emote_1.png"),
     pygame.image.load("assets/guy_emote_2.png")
 ] # switched to final victory dance. Lol
+
 
 def victory_dance(screen, x, y):
     for sprite in guy_emote_sprite:
@@ -116,7 +127,7 @@ team_guy = pygame.image.load("bad-guys/team_guy.png")
 teamers_in_solos = pygame.image.load("bad-guys/teamers_in_solos.png")
 tree_guy = pygame.image.load("bad-guys/tree_guy.png")
 truck_guy = pygame.image.load("bad-guys/truck_guy.png")
-# guy_healing = pygame.transform.scale( guy_healing, (100, 100) )
+# guy_healing = pygame.transform.scale( guy_healing, (100, 100) ) <-- Is there an issue with this? It's rendering weirdly onto the screen, the position is not right?
 
 # map vars
 map_100 = pygame.image.load("assets/map/100.png")
@@ -136,13 +147,6 @@ map_20 = pygame.transform.scale(map_20, (100, 100))
 map_5 = pygame.image.load("assets/map/5.png")
 map_5 = pygame.transform.scale(map_5, (100, 100))
 
-jumping = False
-
-# animation vars
-player_run = 0
-draw_player_jumping_var = [False, 0, 0]
-player_jumping_question = False
-game_start = False
 # player setup
 
 hard_coded_x_y = ["False", "0", 0, 0]
@@ -161,7 +165,7 @@ player_jumping_rect = player_jumping.get_rect()
 player_jumping_rect.x = 0
 player_jumping_rect.y = 0
 
-inventory = [] # inventory storage. for weapon management.
+
 
 data.write("loaded all vars", "log.txt")
 
@@ -184,8 +188,8 @@ if(config.get_config()[0]['log-everything']):
     print("\n")
 
 def drop_weapon():
-    files = random.choice(os.listdir("guns"))
-    return files
+    files = random.choice(os.listdir("guns")) # get random weapon from the guns folder 
+    return files # return that weapon
 
 # main game loop
 
@@ -200,10 +204,6 @@ def drop_weapon():
 # <<<< Add comments for what is happening in your game loop
 # done
 
-all_usernames = []
-usernames_number = 0
-username_counter = 0
-
 with open('usernames.txt', 'r') as file:
     local_name = file.readlines()
     j = random.randint(5, 9)
@@ -213,13 +213,7 @@ with open('usernames.txt', 'r') as file:
         print(f"Loaded {j} usernames!")
     usernames_number = j
 
-
-username_counter = 0
-
-# weapon handler vars
-current_weapon = None
-current_weapon_rect = None
-
+# below is the code to change map based on the questions answered. 
 def get_current_map(questions_answered):
     if questions_answered == 0:
         return map_100
@@ -242,7 +236,7 @@ def get_current_map(questions_answered):
 
 while True:
     clock.tick(60)
-    screen.fill((255, 255, 255)) # small way to make it go faster, clear previous images instead of just drawing over top of it.
+    screen.fill((255, 255, 255)) # small way to make code go faster, clear previous images instead of just drawing over top of it.
 
     # this is the "Fortnite" loading screen.
     if not game_ready:
@@ -280,6 +274,8 @@ while True:
     if(background):
         screen.blit(main_background, (0, 0))
 
+    # below is the code to make the bus move to the end of the screen
+    # after it has moved to the end, print END.
     if game_ready and bus_starting:
         background = True
         battle_bus_rectangle.x = battle_bus_rectangle.x + 1
@@ -313,7 +309,7 @@ while True:
         # wow, this just won't work. Animation just isn't working.
         #  no animations will be included sadly.
 
-
+    # the code to render the fps counter based on the get_fps() method.
     num_fps = int(clock.get_fps())
     if(num_fps < 20):
         fps = font.render(f"{num_fps} FPS", True, (254,5,5))
@@ -330,6 +326,7 @@ while True:
         screen.blit(player_sprite[0], player_sprite_rectangle)
         hard_coded_x_y[1] = "1"
 
+    # will be removed later, this is just useless.
     def animate_running(x, y):
         for i in range(3):
             if(config.get_config()[0]['log-everything']):
@@ -371,7 +368,7 @@ while True:
                 screen.blit(text_surface, (20, 300 - (i * 30)))
 
     # below code, handles bad-guys and questions.
-    if(currently != None): # there is something here.
+    if(currently != None): # there is something in varaible currently.
         if(currently[1].x <= 500 and currently[1].x > currently[2][0]):
             currently[1].x -= 1
             if(config.get_config()[0]['log-bad-guys-position']):
@@ -392,16 +389,17 @@ while True:
                 else:
                     print("no skill, can't answer any questions? had to use the config to skip questions.")
                     right_or_no = True
-                
+                # below is code to doing stuff if the answer is right or not.
                 if(right_or_no):
                     questions_answered += 1
                     if(questions_answered >= TOTAL_QUESTIONS):
                         print(f"GG!")
                     else:
                         print(f"Good Job! {TOTAL_QUESTIONS - questions_answered} questions remaining!")
+                    # drop a weapon.
                     global_weapon = drop_weapon()
                     weapon_has = True
-                    
+                    # check if the player has answered all the questions, this means there are no one left in the game expect for the player!!! 
                     if questions_answered >= TOTAL_QUESTIONS:
                         print("\n=== VICTORY ROYALE! ===")
                         print(config.get_messages()[1][random.randint(0, len(config.get_messages()[1]) - 1)])
@@ -411,6 +409,7 @@ while True:
                     else:
                         spawn_enemy = True
                 else:
+                    # wrong answer, "crash" the game.
                     exit(1)
             else:
                 screen.blit(currently[0], currently[1])
@@ -443,6 +442,7 @@ while True:
             screen.blit(local_weapon, local_weapon_rect)
             current_map = get_current_map(questions_answered)
             screen.blit(current_map, (400, 0))
+            # Any better way to do this?
             if questions_answered == 0:
                 players_remain = font.render(f"100", True, (255,255,255))
             elif questions_answered == 1:
@@ -467,7 +467,7 @@ while True:
             if(local_weapon_rect.x == player_sprite_rectangle.x):
                 Hand = True
     if(Hand):
-        print("HAND!")
+        # If the weapon is at the player's hand.
         currently = AssetManagement.better_bad_guy_generator()
         currently[1].x = 500
         local_weapon = pygame.image.load('guns/' + global_weapon)
@@ -484,6 +484,7 @@ while True:
         global_weapon = None
         spawn_enemy = True
 
+    # the player count renderer
     if(player_joined):
         current_map = get_current_map(questions_answered)
         if(questions_answered == 0):
@@ -514,9 +515,9 @@ while True:
             players_remain = font.render(f"3", True, (255,255,255))
             screen.blit(players_remain, (420, 100))
         screen.blit(player_counter, (402, 100))
-        # questions_answered
+        # again based on the questions answered, the map will change.
         screen.blit(current_map, (400, 0))
-
+    # global renderer for the weapon.
     if current_weapon and current_weapon_rect:
         screen.blit(current_weapon, current_weapon_rect)
     pygame.display.update()

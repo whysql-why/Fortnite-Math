@@ -1,4 +1,10 @@
 
+# This is the messages.yml file.
+# written by: Epik Games group
+# used for the death and victory messages!
+# you can add more messages if you want to. 
+#It won't harm the code, since no hardcoded values for the messages are used.
+
 death_messages:
   - 'How did you lose that?'
   - 'print goodbye world'

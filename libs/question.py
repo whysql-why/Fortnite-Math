@@ -1,15 +1,21 @@
+
 # question.py
 # created on 2024-12-20
+# This file is for generating questions and checking answers!
+# written by: Epik Games group
+
+
 import random
 from libs import config
 
-
+# get a math question.
 def get_math_question():
     p = random.randint(1, 4)
     pfirst = random.randint(0, 500)
     sfirst = random.randint(0, 500)
     return [p, pfirst, sfirst]
 
+# check the answer to the math question.
 def check_answer(question_hold, local_var, answer_checker):
     # print(f"Question Hold: {question_hold} | local var: {local_var} | answer checker: {answer_checker}")
     if(local_var[0] == '+'):
