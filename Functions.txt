@@ -1,0 +1,96 @@
+
+ALL FUNCTIONS!!
+
+
+
+
+File: libs/data.py
+-----------------
+create(string)
+    What you give it: name of file you want
+    What it does: Makes a new file if there isn't one already
+
+write(string, file)
+    What you give it: 
+        - stuff you want to write
+        - where to write it
+    What it does: Puts words in a file
+
+delete(file)
+    What you give it: file you hate
+    What it does: Makes the file go bye-bye
+
+read(file)
+    What you give it: name of file
+    What it does: Looks at file and tells you what's inside
+
+
+
+
+
+File: libs/question.py
+---------------------
+get_math_question()
+    What you give it: nothing
+    What it spits out: three numbers that make a math problem
+    What it does: Makes random math stuff with numbers between 0 and 500
+
+check_answer(question_hold, local_var, answer_checker)
+    What you give it: math problem stuff and what the player typed
+    What it does: Says "yay" (true) if right, "nope" (false) if wrong
+
+return_question_hold()
+    What you give it: nothing
+    What it does: Makes math problems based on what kind we want
+
+
+
+
+
+File: libs/config.py
+-------------------
+get_config()
+    What you give it: nothing
+    What it does: Reads some important game rules from a file
+
+get_messages()
+    What you give it: nothing
+    What it does: Gets all the words we want to show players
+
+
+
+
+
+File: libs/AssetManagement.py
+----------------------------
+better_bad_guy_generator()
+    What you give it: nothing
+    What it does: Makes a random bad guy appear somewhere
+
+
+
+
+
+File: main.py
+------------
+drop_weapon()
+    What you give it: nothing
+    What it does: Picks a random gun to give you
+
+victory_dance(screen, x, y)
+    What you give it: where to dance
+    What it does: Makes happy dance moves on screen
+
+get_current_map(questions_answered)
+    What you give it: how many questions player got right
+    What it does: Shows the right game level picture
+
+animate_running(x, y)
+    What you give it: where to run
+    What it does: Makes player look like they're running
+
+write_question(string)
+    What you give it: math problem stuff
+    What it does: Writes down what happened when player tried to answer
+
+
