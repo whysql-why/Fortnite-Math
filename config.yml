@@ -1,0 +1,24 @@
+# main config of the fortnite math game. for testing purposes.
+# file created on 2024-12-14
+
+debug:
+  log-bad-guys-position: false # added
+  log-everything: true # way cleaner way, when combined with everything else is "False".
+  question-answer-log-before: true # added.
+  log-previous-questions: false # not added yet
+  skip-questions: false # skips all questions, for testing purposes.
+
+
+# If all of them are false, then a random one
+# will be chosen!
+# If more than 1 is set to true, then it will go to the first one and so one.
+# example:
+# only-division: true
+# only-addiction: true
+# it will be division. based on the order.
+
+questions:
+  only-multiplication: false
+  only-division: false
+  only-addition: true
+  only-subtraction: false

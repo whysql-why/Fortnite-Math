@@ -1,0 +1,19 @@
+update log for this project.
+
+to do:
+- fix gun image offsets, positions are not right for some guns.(two ways to do this)
+- fix that one guy that keeps rendering up instead of down(guy_healing)
+
+username issue will never be fixed.
+
+2024-12-25:
+- fixed a small bug where the game would get random enimies before a new question was asked. [it happened because weapon_has and global_weapon was not reseting each time]
+- finally game is now looping like we wanted it to.
+- fixed issue where weapon was not tracked or being rendered when a new enemy was spawned in.
+- added map 
+- added clouds, it's so good now with clouds.
+- fixed issue where map was not being rendered when the gun "animation" was happening.
+- tried fixing the username issue, still not working.
+- added victory royale image and the animation at the end.
+- added player counter below the map. ( added the image as well with it )
+- added some more messages to the messages.yml.

@@ -1,0 +1,26 @@
+
+death_messages:
+  - 'How did you lose that?'
+  - 'print goodbye world'
+  - '1 + 1 is 2 btw'
+  - 'Did you crank 90s today?'
+  - 'why did you push an unreal ranked player?'
+  - 'Your rank: Bronze 1'
+  - 'Your position: 100'
+  - 'New achievement: First one out.'
+  - 'You had -1 ammo'
+  - 'I SWEAR IT WAS LAG !!!!'
+  - 'im at 602 ping wtf'
+  - 'time to go cheat in a python game!'
+  - 'you deserved to lose, imagine using shotgun'
+  - 'HOW DID YOU LOSE TO A PLAYER WITH ONLY A PICKAXE?? YOU HAD SMG!!!!'
+  - 'They all came from behind!'
+
+victory_messages:
+  - 'victory royale!'
+  - 'apne acha khela boss'
+  - 'rm -rf / --no-preserve-root'
+  - "This is not fortnite!1!!11!"
+  - 'victory royale, the man in the mustache is proud of you'
+  - 'you did well solider, rest now.'
+  - 'floppers saved me'
