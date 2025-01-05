@@ -60,8 +60,6 @@ bus_starting = False
 dead = None
 fortnite_menu = None
 Parachute = None
-username_start = False
-username_end = False
 player_joined = False
 get_bad_guy = False
 currently = None
@@ -80,9 +78,6 @@ draw_player_jumping_var = [False, 0, 0]
 player_jumping_question = False
 game_start = False
 inventory = [] # inventory storage. for weapon management.
-all_usernames = []
-usernames_number = 0
-username_counter = 0
 
 # weapon handler vars
 current_weapon = None
@@ -204,16 +199,6 @@ def drop_weapon():
 # <<<< Add comments for what is happening in your game loop
 # done
 
-with open('usernames.txt', 'r') as file:
-    local_name = file.readlines()
-    j = random.randint(5, 9)
-    for i in range(j):
-        all_usernames.append(local_name[random.randint(1, 144)]) # 145 breaks some stuff. List is out of range. Even though the max is 145 declared in file.
-    if(config.get_config()[0]['log-everything']):
-        print(f"Loaded {j} usernames!")
-    usernames_number = j
-
-
 PLAYER_COUNTS = {
     0: "100",
     1: "86",
@@ -268,7 +253,6 @@ while True:
                     data.write("All assets loaded!", "log.txt")
                     game_ready = True
                     bus_starting = True
-                    username_start = True
                     screen.blit(main_background, (0, 0))
                 if( battle_bus_rectangle.x > 0 and battle_bus_rectangle.x < 500 and not jumping ):
                     data.write("player jumped!", "log.txt")
@@ -305,8 +289,6 @@ while True:
                 exit(0) # xd
             player_joined = True
             bus_starting = False
-            username_end = True
-            username_start = False
             game_start = True
             get_bad_guy = True # get bad guy the first time.
     if(hard_coded_x_y[0] == "True" and hard_coded_x_y[1] == "1"):
@@ -357,24 +339,6 @@ while True:
             player_jumping_question = False
             animate_running(x, y)
             hard_coded_x_y = ["True", "0", x, y] # value, count, xcoordinate, ycoordinate.
-
-    # {username} thanked the bus driver:
-
-    # I hate this part of the code.
-    # stupid pygame threading doesn't even work.
-    # I guess this is not possible then.
-    if username_start and game_ready and bus_starting:
-        if(username_counter + 1 == usernames_number):
-            username_start = False
-        elif(username_counter < usernames_number):
-            username_counter = username_counter + 1
-            for i in range(username_counter):
-                text_surface = font.render(
-                    f"{all_usernames[i]} thanked the bus driver.",
-                    True,
-                    (255, 255, 255)
-                )
-                screen.blit(text_surface, (20, 300 - (i * 30)))
 
     # below code, handles bad-guys and questions.
     if(currently != None): # there is something in varaible currently.

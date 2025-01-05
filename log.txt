@@ -1388,3 +1388,7 @@
 [2025-01-05 14:43:15.379109] All assets loaded!
 [2025-01-05 14:43:15.543325] player jumped!
 [2025-01-05 14:43:23.713916] Bus is off the screen.
+[2025-01-05 14:46:24.258088] loaded all vars
+[2025-01-05 14:46:24.651962] All assets loaded!
+[2025-01-05 14:46:24.769742] player jumped!
+[2025-01-05 14:46:35.065045] Bus is off the screen.
