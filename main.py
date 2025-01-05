@@ -3,7 +3,7 @@ import os
 # os.system('pip install pyyaml') <-- for CODEHS
 from libs import data
 from libs import question
-from libs import random_1
+# from libs import random_1
 from libs import config
 from libs import AssetManagement
 import random, sys, pygame
@@ -213,26 +213,35 @@ with open('usernames.txt', 'r') as file:
         print(f"Loaded {j} usernames!")
     usernames_number = j
 
+
+PLAYER_COUNTS = {
+    0: "100",
+    1: "86",
+    2: "74",
+    3: "69",
+    4: "61",
+    5: "49",
+    6: "22",
+    7: "14",
+    8: "3"
+}
+
+
+
+MAP_STATE = {
+    0: map_100,
+    1: map_80,
+    2: map_70,
+    3: map_60,
+    4: map_50,
+    5: map_40,
+    6: map_20,
+    7: map_5
+}
 # below is the code to change map based on the questions answered. 
 def get_current_map(questions_answered):
-    if questions_answered == 0:
-        return map_100
-    elif questions_answered == 1:
-        return map_80
-    elif questions_answered == 2:
-        return map_70
-    elif questions_answered == 3:
-        return map_60
-    elif questions_answered == 4:
-        return map_50
-    elif questions_answered == 5:
-        return map_40
-    elif questions_answered == 6:
-        return map_20
-    elif questions_answered >= 7:
-        return map_5
-    return map_100
-
+    return MAP_STATE.get(questions_answered, map_100)
+# changed to dictionary. much better.
 
 while True:
     clock.tick(60)
@@ -442,25 +451,7 @@ while True:
             screen.blit(local_weapon, local_weapon_rect)
             current_map = get_current_map(questions_answered)
             screen.blit(current_map, (400, 0))
-            # Any better way to do this?
-            if questions_answered == 0:
-                players_remain = font.render(f"100", True, (255,255,255))
-            elif questions_answered == 1:
-                players_remain = font.render(f"86", True, (255,255,255))
-            elif questions_answered == 2:
-                players_remain = font.render(f"74", True, (255,255,255))
-            elif questions_answered == 3:
-                players_remain = font.render(f"69", True, (255,255,255))
-            elif questions_answered == 4:
-                players_remain = font.render(f"61", True, (255,255,255))
-            elif questions_answered == 5:
-                players_remain = font.render(f"49", True, (255,255,255))
-            elif questions_answered == 6:
-                players_remain = font.render(f"22", True, (255,255,255))
-            elif questions_answered == 7:
-                players_remain = font.render(f"14", True, (255,255,255))
-            elif questions_answered == 8:
-                players_remain = font.render(f"3", True, (255,255,255))
+            players_remain = font.render(PLAYER_COUNTS.get(questions_answered, "100"), True, (255,255,255))
             screen.blit(player_counter, (402, 100))
             screen.blit(players_remain, (420, 100))
             pygame.display.update()
@@ -487,33 +478,8 @@ while True:
     # the player count renderer
     if(player_joined):
         current_map = get_current_map(questions_answered)
-        if(questions_answered == 0):
-            players_remain = font.render(f"100", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 1):
-            players_remain = font.render(f"86", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 2):
-            players_remain = font.render(f"74", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 3):
-            players_remain = font.render(f"69", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 4):
-            players_remain = font.render(f"61", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 5):
-            players_remain = font.render(f"49", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 6):
-            players_remain = font.render(f"22", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 7):
-            players_remain = font.render(f"14", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
-        if(questions_answered == 8):
-            players_remain = font.render(f"3", True, (255,255,255))
-            screen.blit(players_remain, (420, 100))
+        players_remain = font.render(PLAYER_COUNTS.get(questions_answered, "100"), True, (255,255,255))
+        screen.blit(players_remain, (420, 100))
         screen.blit(player_counter, (402, 100))
         # again based on the questions answered, the map will change.
         screen.blit(current_map, (400, 0))
