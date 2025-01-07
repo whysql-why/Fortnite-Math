@@ -400,5 +400,7 @@ while True:
     # global renderer for the weapon.
     if current_weapon and current_weapon_rect:
         screen.blit(current_weapon, current_weapon_rect)
+    pygame.display.update() #universal display refresh update()
+
     utils.fps_counter(clock, screen, font)
     pygame.display.update()
