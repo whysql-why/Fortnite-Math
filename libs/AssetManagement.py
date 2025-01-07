@@ -32,7 +32,7 @@ def better_bad_guy_generator():
 
 BAD_GUY_POSITIONS = {
     "building_guy": (400, 170),
-    "guy_healing": (400, 140),
+    "guy_healing": (400, 200),
     "heal_guy": (400, 200),
     "L_camper": (400, 190),
     "L_camper_2": (400, 135),

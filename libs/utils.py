@@ -1,3 +1,15 @@
+import os
+from PIL import Image
+
+
+def image_fix():
+    images = os.listdir("guns")
+    for image in images: # good size would be 47x18
+        with Image.open(f"guns/{image}") as img:
+            if(img.size != (47, 18)):
+                img = img.resize((47, 18))
+                img.save(f"guns/{image}")
+                print(f"done with {image}")
 
 
 def victory_dance(screen, x, y, guy_emote_sprite, main_background, victory_royale, pygame, time):

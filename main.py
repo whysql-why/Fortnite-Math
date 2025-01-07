@@ -1,7 +1,9 @@
 print("Hello world!")
 import os
-# os.system('pip install pyyaml') <-- for CODEHS
-from libs import data, utils, question, config, AssetManagement, GameState
+from libs import utils
+# os.system("pip install pyyaml")
+# os.system("pip install pillow")
+from libs import data, question, config, AssetManagement, GameState
 import random, sys, pygame, time
 
 # <<<< Let's talk about setting different functions for different modes or states of the game
@@ -22,7 +24,7 @@ screen = pygame.display.set_mode( (500 , 330) ) # screen size
 font = pygame.font.Font(None, 20) # for text
 
 utils.start_up(config)
-
+utils.image_fix()
 # backgrounds init
 intro_background = pygame.image.load( 'assets/fortnite_menu.png' ) # load
 intro_background = pygame.transform.scale( intro_background, ( 500,330 )) # scale 
@@ -194,9 +196,8 @@ while True:
     if player_jumping_question:
         draw_player_jumping_var[0] = "True"
         player_jumping_question = False
+
     # all pygame events and "jumping" and "Start Game" logic here.
-
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             print("Goodbye world!")
@@ -384,7 +385,5 @@ while True:
     # global renderer for the weapon.
     if current_weapon and current_weapon_rect:
         screen.blit(current_weapon, current_weapon_rect)
-    pygame.display.update() #universal display refresh update()
-
     utils.fps_counter(clock, screen, font)
-    pygame.display.update()
+    pygame.display.update() #universal display refresh update()
