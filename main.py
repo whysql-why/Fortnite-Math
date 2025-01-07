@@ -1,18 +1,8 @@
 print("Hello world!")
 import os
 # os.system('pip install pyyaml') <-- for CODEHS
-from libs import data
-from libs import question
-# from libs import random_1
-from libs import config
-from libs import AssetManagement
-import random, sys, pygame
-import threading, time
-
-# data.delete("log.txt")
-# data.create("log.txt")
-# data.write("hello!", "log.txt")
-# data.read("log.txt")
+from libs import data, utils, question, config, AssetManagement
+import random, sys, pygame, time
 
 # <<<< Let's talk about setting different functions for different modes or states of the game
 # yes done
@@ -29,12 +19,9 @@ pygame.init() # initialize pygame
 pygame.font.init() # initialize font
 clock = pygame.time.Clock() # clock for the game
 screen = pygame.display.set_mode( (500 , 330) ) # screen size
-font = pygame.font.Font(None, 20) # for thanking bus driver
-if(config.get_config()[0]['log-everything']): # check if the log-everything is enabled in the config 
-    print("\nTIP: If you see black screen, \nRestart the game!")
-    print("Your Graphics Screen might not be loaded properly.")
-    print("Or You just enabled graphics screen as the program was running,")
-    print("In that case, please restart the game!")
+font = pygame.font.Font(None, 20) # for text
+
+utils.start_up(config)
 
 # backgrounds init
 intro_background = pygame.image.load( 'assets/fortnite_menu.png' ) # load
@@ -160,20 +147,7 @@ player_jumping_rect = player_jumping.get_rect()
 player_jumping_rect.x = 0
 player_jumping_rect.y = 0
 
-
-
 data.write("loaded all vars", "log.txt")
-
-# temp files docs:
-# questions.txt <-- stores previous questions, only use is in config.yml
-# add more when more files are needed.
-
-def write_question(string):
-    with open('temp/questions.txt', 'w') as file:
-        file.write(string)
-    if(config.get_config()[0]['log-everything']):
-        print("Question is written to file.")
-        print(f"Log Previous Questions is set to: {config.get_config()[0]['log-previous-questions']}")
 
 
 if(config.get_config()[0]['log-everything']):
@@ -211,8 +185,6 @@ PLAYER_COUNTS = {
     8: "3"
 }
 
-
-
 MAP_STATE = {
     0: map_100,
     1: map_80,
@@ -247,20 +219,17 @@ while True:
             exit(1)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                if not game_ready and not bus_starting:
-                    if(config.get_config()[0]['log-everything']):
-                        print("Loading ALL assets.")
-                    data.write("All assets loaded!", "log.txt")
+                jump = utils.check_jump(event, game_ready, bus_starting, jumping, battle_bus_rectangle, pygame, config, data, screen, main_background)
+                if jump[0]:
                     game_ready = True
+                if jump[1]:
                     bus_starting = True
-                    screen.blit(main_background, (0, 0))
-                if( battle_bus_rectangle.x > 0 and battle_bus_rectangle.x < 500 and not jumping ):
-                    data.write("player jumped!", "log.txt")
-                    if(config.get_config()[0]['log-everything']):
-                        print("\n[debug]: detected player wanting to jump off the battle bus!\n")
+                if jump[2]:
                     jumping = True
+                if jump[3]:
                     player_jumping_question = True
-                    draw_player_jumping_var = ["True", battle_bus_rectangle.x, battle_bus_rectangle.y]
+                if jump[4]:
+                    draw_player_jumping_var = jump[4]
     # make the bus move to the end of the screen
     # after it has moved to the end, print END.
 
@@ -300,32 +269,12 @@ while True:
         # wow, this just won't work. Animation just isn't working.
         #  no animations will be included sadly.
 
-    # the code to render the fps counter based on the get_fps() method.
-    num_fps = int(clock.get_fps())
-    if(num_fps < 20):
-        fps = font.render(f"{num_fps} FPS", True, (254,5,5))
-    if(num_fps > 50):
-        fps = font.render(f"{num_fps} FPS", True, (49,253,3))
-    if(num_fps < 50 and num_fps > 20):
-        fps = font.render(f"{num_fps} FPS", True, (255,222,89))
-    screen.blit(fps, (30, 30))
-
     if(hard_coded_x_y[0] == "True" and hard_coded_x_y[1] == "0"):
         player_sprite_rectangle = player_sprite[0].get_rect()
         player_sprite_rectangle.x = hard_coded_x_y[2] + 50
         player_sprite_rectangle.y = hard_coded_x_y[3] + 50
         screen.blit(player_sprite[0], player_sprite_rectangle)
         hard_coded_x_y[1] = "1"
-
-    # will be removed later, this is just useless.
-    def animate_running(x, y):
-        for i in range(3):
-            if(config.get_config()[0]['log-everything']):
-                print(f"Animation State: {i}")
-            player_sprite_rectangle = player_sprite[i].get_rect()
-            player_sprite_rectangle.x = x + 50
-            player_sprite_rectangle.y = y + 50
-            screen.blit(player_sprite[i], player_sprite_rectangle)
 
     if(draw_player_jumping_var[0] == "True"):
         x = draw_player_jumping_var[1]
@@ -337,7 +286,7 @@ while True:
         player_jumping_question = True
         if(y == 150):
             player_jumping_question = False
-            animate_running(x, y)
+            # animate_running(x, y)
             hard_coded_x_y = ["True", "0", x, y] # value, count, xcoordinate, ycoordinate.
 
     # below code, handles bad-guys and questions.
@@ -376,13 +325,13 @@ while True:
                     if questions_answered >= TOTAL_QUESTIONS:
                         print("\n=== VICTORY ROYALE! ===")
                         print(config.get_messages()[1][random.randint(0, len(config.get_messages()[1]) - 1)])
-                        print("=====================")
+                        print("=========================")
                         while True:
                             victory_dance(screen, player_sprite_rectangle.x, player_sprite_rectangle.y)
                     else:
                         spawn_enemy = True
                 else:
-                    # wrong answer, "crash" the game.
+                    # wrong answer, "crash" the game
                     exit(1)
             else:
                 screen.blit(currently[0], currently[1])
@@ -404,6 +353,7 @@ while True:
         #  75, 205 <-- Hand
         local_weapon_rect.x = 365
         local_weapon_rect.y = 220 # floating, all images have different res, so this will be a issue.
+        # maybe resize other images to the same size? that would be much better and it will fix some image position issues.
         screen.blit(local_weapon, local_weapon_rect)
         pygame.display.update()
         right_or_no = False
@@ -450,4 +400,5 @@ while True:
     # global renderer for the weapon.
     if current_weapon and current_weapon_rect:
         screen.blit(current_weapon, current_weapon_rect)
+    utils.fps_counter(clock, screen, font)
     pygame.display.update()

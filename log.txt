@@ -1392,3 +1392,115 @@
 [2025-01-05 14:46:24.651962] All assets loaded!
 [2025-01-05 14:46:24.769742] player jumped!
 [2025-01-05 14:46:35.065045] Bus is off the screen.
+[2025-01-07 15:35:35.181708] loaded all vars
+[2025-01-07 15:35:36.369201] All assets loaded!
+[2025-01-07 15:35:36.909787] player jumped!
+[2025-01-07 15:36:11.908981] loaded all vars
+[2025-01-07 15:36:29.826466] loaded all vars
+[2025-01-07 15:36:31.252034] All assets loaded!
+[2025-01-07 15:36:31.450578] player jumped!
+[2025-01-07 15:36:39.453602] Bus is off the screen.
+[2025-01-07 15:40:43.128896] loaded all vars
+[2025-01-07 15:41:07.021963] loaded all vars
+[2025-01-07 15:41:07.607410] All assets loaded!
+[2025-01-07 15:41:08.082758] player jumped!
+[2025-01-07 15:41:29.090616] loaded all vars
+[2025-01-07 15:41:29.623593] All assets loaded!
+[2025-01-07 15:41:29.836189] player jumped!
+[2025-01-07 15:41:37.843234] Bus is off the screen.
+[2025-01-07 15:53:58.466864] loaded all vars
+[2025-01-07 15:54:00.745324] player jumped!
+[2025-01-07 15:54:07.905202] Bus is off the screen.
+[2025-01-07 15:56:10.549435] loaded all vars
+[2025-01-07 15:56:11.091611] player jumped!
+[2025-01-07 15:56:17.052521] loaded all vars
+[2025-01-07 15:56:17.765030] player jumped!
+[2025-01-07 16:00:53.026307] loaded all vars
+[2025-01-07 16:00:56.540334] loaded all vars
+[2025-01-07 16:01:31.041238] loaded all vars
+[2025-01-07 16:01:35.059370] loaded all vars
+[2025-01-07 16:02:49.900263] loaded all vars
+[2025-01-07 16:03:05.197881] loaded all vars
+[2025-01-07 16:03:17.874871] loaded all vars
+[2025-01-07 16:03:18.408993] All assets loaded!
+[2025-01-07 16:03:47.674636] loaded all vars
+[2025-01-07 16:03:48.229050] All assets loaded!
+[2025-01-07 16:05:21.851690] loaded all vars
+[2025-01-07 16:05:22.510794] All assets loaded!
+[2025-01-07 16:05:22.887466] player jumped!
+[2025-01-07 16:05:30.742913] Bus is off the screen.
+[2025-01-07 16:05:46.760593] loaded all vars
+[2025-01-07 16:05:47.194985] All assets loaded!
+[2025-01-07 16:05:47.377829] player jumped!
+[2025-01-07 16:05:55.387142] Bus is off the screen.
+[2025-01-07 16:08:36.976803] loaded all vars
+[2025-01-07 16:08:37.455300] All assets loaded!
+[2025-01-07 16:08:37.653463] player jumped!
+[2025-01-07 16:08:45.691254] Bus is off the screen.
+[2025-01-07 16:13:40.392701] loaded all vars
+[2025-01-07 16:13:40.944405] All assets loaded!
+[2025-01-07 16:14:29.979425] loaded all vars
+[2025-01-07 16:14:30.483570] All assets loaded!
+[2025-01-07 16:14:30.645339] player jumped!
+[2025-01-07 16:14:37.789600] loaded all vars
+[2025-01-07 16:14:38.501924] All assets loaded!
+[2025-01-07 16:16:37.811190] loaded all vars
+[2025-01-07 16:16:38.328195] All assets loaded!
+[2025-01-07 16:16:39.765740] player jumped!
+[2025-01-07 16:17:28.170600] loaded all vars
+[2025-01-07 16:17:28.758597] All assets loaded!
+[2025-01-07 16:17:59.421394] loaded all vars
+[2025-01-07 16:17:59.901588] All assets loaded!
+[2025-01-07 16:18:00.539335] player jumped!
+[2025-01-07 16:18:08.116440] Bus is off the screen.
+[2025-01-07 16:26:05.411473] loaded all vars
+[2025-01-07 16:28:13.833490] loaded all vars
+[2025-01-07 16:28:29.368470] loaded all vars
+[2025-01-07 16:28:50.862878] loaded all vars
+[2025-01-07 16:29:00.681003] loaded all vars
+[2025-01-07 16:29:14.593571] loaded all vars
+[2025-01-07 16:29:25.266062] loaded all vars
+[2025-01-07 16:30:21.373056] loaded all vars
+[2025-01-07 16:30:32.921487] loaded all vars
+[2025-01-07 16:30:50.068507] loaded all vars
+[2025-01-07 16:31:00.216659] loaded all vars
+[2025-01-07 16:31:08.440670] loaded all vars
+[2025-01-07 16:31:31.437396] loaded all vars
+[2025-01-07 16:31:37.067158] loaded all vars
+[2025-01-07 16:31:43.596125] loaded all vars
+[2025-01-07 16:32:03.980940] loaded all vars
+[2025-01-07 16:32:05.656562] All assets loaded!
+[2025-01-07 16:32:06.739725] All assets loaded!
+[2025-01-07 16:32:07.347796] All assets loaded!
+[2025-01-07 16:32:07.528461] All assets loaded!
+[2025-01-07 16:32:07.708462] All assets loaded!
+[2025-01-07 16:32:07.873213] All assets loaded!
+[2025-01-07 16:32:08.056500] All assets loaded!
+[2025-01-07 16:32:08.223006] All assets loaded!
+[2025-01-07 16:32:08.404129] All assets loaded!
+[2025-01-07 16:32:08.603404] All assets loaded!
+[2025-01-07 16:32:08.768439] All assets loaded!
+[2025-01-07 16:32:08.966321] All assets loaded!
+[2025-01-07 16:32:09.134363] All assets loaded!
+[2025-01-07 16:32:09.314844] All assets loaded!
+[2025-01-07 16:32:09.480701] All assets loaded!
+[2025-01-07 16:32:09.659772] All assets loaded!
+[2025-01-07 16:32:09.807453] All assets loaded!
+[2025-01-07 16:32:09.960390] All assets loaded!
+[2025-01-07 16:32:30.222594] loaded all vars
+[2025-01-07 16:32:31.058303] All assets loaded!
+[2025-01-07 16:32:31.647455] All assets loaded!
+[2025-01-07 16:32:31.878005] All assets loaded!
+[2025-01-07 16:32:32.058950] All assets loaded!
+[2025-01-07 16:32:32.455428] All assets loaded!
+[2025-01-07 16:33:24.842094] loaded all vars
+[2025-01-07 16:34:20.316717] loaded all vars
+[2025-01-07 16:35:24.458253] loaded all vars
+[2025-01-07 16:39:11.709197] loaded all vars
+[2025-01-07 16:40:33.230357] loaded all vars
+[2025-01-07 16:41:37.459350] loaded all vars
+[2025-01-07 16:42:00.574507] loaded all vars
+[2025-01-07 16:42:01.078706] All assets loaded!
+[2025-01-07 16:42:01.519724] player jumped!
+[2025-01-07 16:42:09.292225] Bus is off the screen.
+[2025-01-07 16:43:53.231497] loaded all vars

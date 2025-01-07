@@ -30,7 +30,6 @@ def better_bad_guy_generator():
 # DO NOT DELETE THE FOLLOWING:
 # this took so much time to get right.
 
-# get_max(name) the name represents the bad guy's name from the bad-guys folder.
 BAD_GUY_POSITIONS = {
     "building_guy": (400, 170),
     "guy_healing": (400, 140),
@@ -46,5 +45,6 @@ BAD_GUY_POSITIONS = {
     "truck_guy": (300, 139)
 }
 
+# get_max(name) the name represents the bad guy's name from the bad-guys folder
 def get_max(name):
-    return BAD_GUY_POSITIONS.get(name, (400, 200))  # 400, 200 is the default position, if the name is not found in the dictionary.
+    return BAD_GUY_POSITIONS.get(name, (400, 200))
