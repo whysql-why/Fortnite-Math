@@ -1,14 +1,10 @@
 # storage, i guess this is a good way to do this and it will reduce the main file size!!
+
 state = {
     'background': False,
     'game_ready': False,
     'bus_starting': False,
-    'dead': None,
-    'fortnite_menu': None,
-    'parachute': None,
     'player_joined': False,
-    'get_bad_guy': False,
-    'currently': None,
     'weapon_has': False,
     'global_weapon': None,
     'hand': False,
@@ -24,12 +20,7 @@ def reset_game_state():
         'background': False,
         'game_ready': False,
         'bus_starting': False,
-        'dead': None,
-        'fortnite_menu': None,
-        'parachute': None,
         'player_joined': False,
-        'get_bad_guy': False,
-        'currently': None,
         'weapon_has': False,
         'global_weapon': None,
         'hand': False,
