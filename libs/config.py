@@ -27,6 +27,7 @@ def get_messages():
 def reload_config():
     with open('config.yml') as file:
         config_load = yaml.safe_load(file)
+        return config_load
 def get_config():
     config = config_load['debug']
     config_question = config_load['questions']

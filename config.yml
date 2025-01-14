@@ -3,10 +3,10 @@
 
 debug:
   log-bad-guys-position: false # added
-  log-everything: true # way cleaner way, when combined with everything else is "False".
-  question-answer-log-before: true # added.
+  log-everything: false # way cleaner way, when combined with everything else is "False".
+  question-answer-log-before: false # added.
   log-previous-questions: false # not added yet
-  skip-questions: true # skips all questions, for testing purposes.
+  skip-questions: false # skips all questions, for testing purposes.
 
 
 # If all of them are false, then a random one
@@ -20,5 +20,5 @@ debug:
 questions:
   only-multiplication: false
   only-division: false
-  only-addition: true
+  only-addition: false
   only-subtraction: false

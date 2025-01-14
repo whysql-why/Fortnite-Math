@@ -3,10 +3,9 @@ import os
 from libs import utils
 # os.system("pip install pyyaml")
 # os.system("pip install pillow")
-from libs import data, question, config, AssetManagement, GameState
+from libs import data, question, config, AssetManagement, GameState, Anticheat
 from networking import packets
-import random, sys, pygame, time
-import uuid
+import random, sys, pygame, time, uuid, threading
 
 session_id = uuid.uuid4()
 # ============================================= 
@@ -21,6 +20,9 @@ username = "the_goat"
 
 if(multiplayer):
     GameState.set_state('multiplayer_var', True)
+    # very good checks!! anticheat is client sided
+    # "never trust the client"
+    Anticheat.enable()
 
 # <<<< Let's talk about setting different functions for different modes or states of the game
 # yes done
@@ -203,7 +205,7 @@ def get_current_map(questions_answered):
 # changed to dictionary. much better.
 
 while True:
-    # if(not multiplayer or not not_connected):
+    if(not multiplayer or not not_connected): # um
         clock.tick(60)
         screen.fill((255, 255, 255)) # small way to make code go faster, clear previous images instead of just drawing over top of it.
 
@@ -218,6 +220,7 @@ while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 print("Goodbye world!")
+                packets.disconnect(server_ip, server_port, session_id, username)
                 exit(1)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -308,7 +311,6 @@ while True:
                     if(not config.get_config()[0]['skip-questions']):
                         question_answer = input(f"{returned_question_hold[0][1]} {returned_question_hold[1][0]} {returned_question_hold[0][2]} \n==================\n Your Answer: ")
                         write_quest = f"| {returned_question_hold[0][1]} {returned_question_hold[1][0]} {returned_question_hold[0][2]} | Your answer: {question_answer}\n"
-                        write_question(write_quest)
                         right_or_no = question.check_answer(returned_question_hold[0], returned_question_hold[1], question_answer)
                     else:
                         print("no skill, can't answer any questions? had to use the config to skip questions.")
@@ -404,8 +406,8 @@ while True:
             screen.blit(current_weapon, current_weapon_rect)
         utils.fps_counter(clock, screen, font)
         pygame.display.update() #universal display refresh update()
-    #if(multiplayer and not_connected):
-    #    print(f"Connecting to {server_ip}:{server_port}")
-    #    if(packets.connect(server_ip, server_port, session_id, username)):
-    #        print(f"Connected to {server_ip}:{server_port}!")
-    #        not_connected = False # connected now
+    if(multiplayer and not_connected):
+        print(f"Connecting to {server_ip}:{server_port}")
+        if(packets.connect(server_ip, server_port, session_id, username)):
+            print(f"Connected to {server_ip}:{server_port}!")
+            not_connected = False # connected now
