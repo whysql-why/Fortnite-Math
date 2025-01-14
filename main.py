@@ -4,7 +4,23 @@ from libs import utils
 # os.system("pip install pyyaml")
 # os.system("pip install pillow")
 from libs import data, question, config, AssetManagement, GameState
+from networking import packets
 import random, sys, pygame, time
+import uuid
+
+session_id = uuid.uuid4()
+# ============================================= 
+multiplayer = True
+not_connected = True
+server_ip = "127.0.0.1"
+server_port = 25565
+username = "the_goat"
+# ============================================= 
+# default port for Fortnite Math is 25565
+# same as minecraft
+
+if(multiplayer):
+    GameState.set_state('multiplayer_var', True)
 
 # <<<< Let's talk about setting different functions for different modes or states of the game
 # yes done
@@ -187,203 +203,209 @@ def get_current_map(questions_answered):
 # changed to dictionary. much better.
 
 while True:
-    clock.tick(60)
-    screen.fill((255, 255, 255)) # small way to make code go faster, clear previous images instead of just drawing over top of it.
+    # if(not multiplayer or not not_connected):
+        clock.tick(60)
+        screen.fill((255, 255, 255)) # small way to make code go faster, clear previous images instead of just drawing over top of it.
 
-    # this is the "Fortnite" loading screen.
-    if not GameState.get_state('game_ready'):
-        screen.blit( intro_background, ( 0, 0 ) )
-    if player_jumping_question:
-        draw_player_jumping_var[0] = "True"
-        player_jumping_question = False
-
-    # all pygame events and "jumping" and "Start Game" logic here.
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            print("Goodbye world!")
-            exit(1)
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                jump = utils.check_jump(event, GameState.get_state('game_ready'), GameState.get_state('bus_starting'), GameState.get_state('jumping'), battle_bus_rectangle, pygame, config, data, screen, main_background)
-                if jump[0]:
-                    GameState.set_state('game_ready', True)
-                if jump[1]:
-                    GameState.set_state('bus_starting', True)
-                if jump[2]:
-                    GameState.set_state('jumping', True)
-                if jump[3]:
-                    player_jumping_question = True
-                if jump[4]:
-                    draw_player_jumping_var = jump[4]
-    # make the bus move to the end of the screen
-    # after it has moved to the end, print END.
-
-    if(GameState.get_state('background')):
-        screen.blit(main_background, (0, 0))
-
-    # below is the code to make the bus move to the end of the screen
-    # after it has moved to the end, print END.
-    if GameState.get_state('game_ready') and GameState.get_state('bus_starting'):
-        GameState.set_state('background', True)
-        battle_bus_rectangle.x = battle_bus_rectangle.x + 1
-        clouds_x -= 1
-        if clouds_x <= -500:
-            clouds_x = 500
-        screen.blit(clouds, (clouds_x, 0)) # draw first clouds
-        screen.blit(clouds, (clouds_x + 500, 0)) # draw second clouds
-        screen.blit(battle_bus, battle_bus_rectangle)
-        if (battle_bus_rectangle.x == 500):
-            data.write("Bus is off the screen.", "log.txt")
-            if(config.get_config()[0]['log-everything']):
-                print("End") # no longer jump.
-            if(not GameState.get_state('jumping')):
-                if(config.get_config()[0]['log-everything']):
-                    print("Player not even jumping.")
-                    print("Ending game early.")
-                exit(0) # xd
-            GameState.set_state('player_joined', True)
-            GameState.set_state('bus_starting', False)
-            game_start = True
-            GameState.set_state('get_bad_guy', True) # get bad guy the first time.
-    if(hard_coded_x_y[0] == "True" and hard_coded_x_y[1] == "1"):
-        player_sprite_rectangle = player_sprite[0].get_rect()
-        player_sprite_rectangle.x = hard_coded_x_y[2] + 50
-        player_sprite_rectangle.y = hard_coded_x_y[3] + 50
-        screen.blit(player_sprite[0], player_sprite_rectangle)
-        hard_coded_x_y[1] = "0"
-        # wow, this just won't work. Animation just isn't working.
-        #  no animations will be included sadly.
-
-    if(hard_coded_x_y[0] == "True" and hard_coded_x_y[1] == "0"):
-        player_sprite_rectangle = player_sprite[0].get_rect()
-        player_sprite_rectangle.x = hard_coded_x_y[2] + 50
-        player_sprite_rectangle.y = hard_coded_x_y[3] + 50
-        screen.blit(player_sprite[0], player_sprite_rectangle)
-        hard_coded_x_y[1] = "1"
-
-    if(draw_player_jumping_var[0] == "True"):
-        x = draw_player_jumping_var[1]
-        y = draw_player_jumping_var[2]
-        y += 1 # stupid fix. wow
-        draw_player_jumping_var[2] = y
-        screen.blit(player_jumping, (x, y))
-        draw_player_jumping_var[0] = False
-        player_jumping_question = True
-        if(y == 150):
+        # this is the "Fortnite" loading screen.
+        if not GameState.get_state('game_ready'):
+            screen.blit( intro_background, ( 0, 0 ) )
+        if player_jumping_question:
+            draw_player_jumping_var[0] = "True"
             player_jumping_question = False
-            # animate_running(x, y)
-            hard_coded_x_y = ["True", "0", x, y] # value, count, xcoordinate, ycoordinate.
 
-    # below code, handles bad-guys and questions.
-    if(currently != None): # there is something in varaible currently.
-        if(currently[1].x <= 500 and currently[1].x > currently[2][0]):
-            currently[1].x -= 1
-            if(config.get_config()[0]['log-bad-guys-position']):
-                print("X: ", currently[1].x, "Y: ", currently[1].y, "[mostly unused]")
-            screen.blit(currently[0], currently[1]) # smooth.
-        else:
-            if(question_hold[0] == "0"): # no question yet
-                screen.blit(currently[0], currently[1])
-                returned_question_hold = question.return_question_hold()
-                for i in range(10):
-                    print(" \n ")
-                print(f"==== QUESTION {GameState.get_state('questions_answered') + 1}/{GameState.get_state('total_questions')}! ====")
-                if(not config.get_config()[0]['skip-questions']):
-                    question_answer = input(f"{returned_question_hold[0][1]} {returned_question_hold[1][0]} {returned_question_hold[0][2]} \n==================\n Your Answer: ")
-                    write_quest = f"| {returned_question_hold[0][1]} {returned_question_hold[1][0]} {returned_question_hold[0][2]} | Your answer: {question_answer}\n"
-                    write_question(write_quest)
-                    right_or_no = question.check_answer(returned_question_hold[0], returned_question_hold[1], question_answer)
-                else:
-                    print("no skill, can't answer any questions? had to use the config to skip questions.")
-                    right_or_no = True
-                # below is code to doing stuff if the answer is right or not.
-                if(right_or_no):
-                    GameState.set_state('questions_answered', GameState.get_state('questions_answered') + 1)
-                    if(GameState.get_state('questions_answered') >= GameState.get_state('total_questions')):
-                        print(f"GG!")
-                    else:
-                        print(f"Good Job! {GameState.get_state('total_questions') - GameState.get_state('questions_answered')} questions remaining!")
-                    # drop a weapon.
-                    global_weapon = drop_weapon()
-                    GameState.set_state('weapon_has', True)
-                    # check if the player has answered all the questions, this means there are no one left in the game expect for the player!!! 
-                    if GameState.get_state('questions_answered') >= GameState.get_state('total_questions'):
-                        print("\n=== VICTORY ROYALE! ===")
-                        print(config.get_messages()[1][random.randint(0, len(config.get_messages()[1]) - 1)])
-                        print("=========================")
-                        while True:
-                            victory_dance(screen, player_sprite_rectangle.x, player_sprite_rectangle.y)
-                    else:
-                        GameState.set_state('spawn_enemy', True)
-                else:
-                    # wrong answer, "crash" the game
-                    exit(1)
-            else:
-                screen.blit(currently[0], currently[1])
-    else: 
-        if(GameState.get_state('spawn_enemy')):
-            currently = AssetManagement.better_bad_guy_generator()
-            question_hold = ["0","0","0"]
-            GameState.set_state('spawn_enemy', False)
-    if(game_start and GameState.get_state('get_bad_guy')):
-        currently = AssetManagement.better_bad_guy_generator()
-        currently[1].x = 500
-        question_hold = ["0","0","0"]
-        GameState.set_state('get_bad_guy', False)
-    if(GameState.get_state('weapon_has') and global_weapon != None and not GameState.get_state('hand')):
-        # print(f"{weapon_has} | {global_weapon}")
-        local_weapon = pygame.image.load('guns/' + global_weapon)
-        local_weapon_rect = local_weapon.get_rect()
-        #  365, 210 <-- in ground
-        #  75, 205 <-- Hand
-        local_weapon_rect.x = 365
-        local_weapon_rect.y = 220 # floating, all images have different res, so this will be a issue.
-        # maybe resize other images to the same size? that would be much better and it will fix some image position issues.
-        screen.blit(local_weapon, local_weapon_rect)
-        pygame.display.update()
-        right_or_no = False
-        currently = None
-        while(local_weapon_rect.x <= 365 and local_weapon_rect.x > player_sprite_rectangle.x):
-            local_weapon_rect.x -= 1
+        # all pygame events and "jumping" and "Start Game" logic here.
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print("Goodbye world!")
+                exit(1)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    jump = utils.check_jump(event, GameState.get_state('game_ready'), GameState.get_state('bus_starting'), GameState.get_state('jumping'), battle_bus_rectangle, pygame, config, data, screen, main_background)
+                    if jump[0]:
+                        GameState.set_state('game_ready', True)
+                    if jump[1]:
+                        GameState.set_state('bus_starting', True)
+                    if jump[2]:
+                        GameState.set_state('jumping', True)
+                    if jump[3]:
+                        player_jumping_question = True
+                    if jump[4]:
+                        draw_player_jumping_var = jump[4]
+        # make the bus move to the end of the screen
+        # after it has moved to the end, print END.
+
+        if(GameState.get_state('background')):
             screen.blit(main_background, (0, 0))
-            screen.blit(player_sprite[0], player_sprite_rectangle)
-            screen.blit(local_weapon, local_weapon_rect)
-            current_map = get_current_map(GameState.get_state('questions_answered'))
-            screen.blit(current_map, (400, 0))
-            players_remain = font.render(PLAYER_COUNTS.get(GameState.get_state('questions_answered'), "100"), True, (255,255,255))
-            screen.blit(player_counter, (402, 100))
-            screen.blit(players_remain, (420, 100))
-            pygame.display.update()
-            if(local_weapon_rect.x == player_sprite_rectangle.x):
-                GameState.set_state('hand', True)
-    if(GameState.get_state('hand')):
-        # If the weapon is at the player's hand.
-        currently = AssetManagement.better_bad_guy_generator()
-        currently[1].x = 500
-        local_weapon = pygame.image.load('guns/' + global_weapon)
-        local_weapon_rect = local_weapon.get_rect()
-        local_weapon_rect.x = player_sprite_rectangle.x
-        local_weapon_rect.y = 207
-        screen.blit(local_weapon, local_weapon_rect)
-        current_weapon = local_weapon
-        current_weapon_rect = local_weapon_rect
-        inventory.append(local_weapon)
-        inventory.append(local_weapon_rect)
-        GameState.set_state('hand', False)
-        GameState.set_state('weapon_has', False)
-        global_weapon = None
-        GameState.set_state('spawn_enemy', True)
 
-    # the player count renderer
-    if(GameState.get_state('player_joined')):
-        current_map = get_current_map(GameState.get_state('questions_answered'))
-        players_remain = font.render(PLAYER_COUNTS.get(GameState.get_state('questions_answered'), "100"), True, (255,255,255))
-        screen.blit(players_remain, (420, 100))
-        screen.blit(player_counter, (402, 100))
-        # again based on the questions answered, the map will change.
-        screen.blit(current_map, (400, 0))
-    # global renderer for the weapon.
-    if current_weapon and current_weapon_rect:
-        screen.blit(current_weapon, current_weapon_rect)
-    utils.fps_counter(clock, screen, font)
-    pygame.display.update() #universal display refresh update()
+        # below is the code to make the bus move to the end of the screen
+        # after it has moved to the end, print END.
+        if GameState.get_state('game_ready') and GameState.get_state('bus_starting'):
+            GameState.set_state('background', True)
+            battle_bus_rectangle.x = battle_bus_rectangle.x + 1
+            clouds_x -= 1
+            if clouds_x <= -500:
+                clouds_x = 500
+            screen.blit(clouds, (clouds_x, 0)) # draw first clouds
+            screen.blit(clouds, (clouds_x + 500, 0)) # draw second clouds
+            screen.blit(battle_bus, battle_bus_rectangle)
+            if (battle_bus_rectangle.x == 500):
+                data.write("Bus is off the screen.", "log.txt")
+                if(config.get_config()[0]['log-everything']):
+                    print("End") # no longer jump.
+                if(not GameState.get_state('jumping')):
+                    if(config.get_config()[0]['log-everything']):
+                        print("Player not even jumping.")
+                        print("Ending game early.")
+                    exit(0) # xd
+                GameState.set_state('player_joined', True)
+                GameState.set_state('bus_starting', False)
+                game_start = True
+                GameState.set_state('get_bad_guy', True) # get bad guy the first time.
+        if(hard_coded_x_y[0] == "True" and hard_coded_x_y[1] == "1"):
+            player_sprite_rectangle = player_sprite[0].get_rect()
+            player_sprite_rectangle.x = hard_coded_x_y[2] + 50
+            player_sprite_rectangle.y = hard_coded_x_y[3] + 50
+            screen.blit(player_sprite[0], player_sprite_rectangle)
+            hard_coded_x_y[1] = "0"
+            # wow, this just won't work. Animation just isn't working.
+            #  no animations will be included sadly.
+
+        if(hard_coded_x_y[0] == "True" and hard_coded_x_y[1] == "0"):
+            player_sprite_rectangle = player_sprite[0].get_rect()
+            player_sprite_rectangle.x = hard_coded_x_y[2] + 50
+            player_sprite_rectangle.y = hard_coded_x_y[3] + 50
+            screen.blit(player_sprite[0], player_sprite_rectangle)
+            hard_coded_x_y[1] = "1"
+
+        if(draw_player_jumping_var[0] == "True"):
+            x = draw_player_jumping_var[1]
+            y = draw_player_jumping_var[2]
+            y += 1 # stupid fix. wow
+            draw_player_jumping_var[2] = y
+            screen.blit(player_jumping, (x, y))
+            draw_player_jumping_var[0] = False
+            player_jumping_question = True
+            if(y == 150):
+                player_jumping_question = False
+                # animate_running(x, y)
+                hard_coded_x_y = ["True", "0", x, y] # value, count, xcoordinate, ycoordinate.
+
+        # below code, handles bad-guys and questions.
+        if(currently != None): # there is something in varaible currently.
+            if(currently[1].x <= 500 and currently[1].x > currently[2][0]):
+                currently[1].x -= 1
+                if(config.get_config()[0]['log-bad-guys-position']):
+                    print("X: ", currently[1].x, "Y: ", currently[1].y, "[mostly unused]")
+                screen.blit(currently[0], currently[1]) # smooth.
+            else:
+                if(question_hold[0] == "0"): # no question yet
+                    screen.blit(currently[0], currently[1])
+                    returned_question_hold = question.return_question_hold()
+                    for i in range(10):
+                        print(" \n ")
+                    print(f"==== QUESTION {GameState.get_state('questions_answered') + 1}/{GameState.get_state('total_questions')}! ====")
+                    if(not config.get_config()[0]['skip-questions']):
+                        question_answer = input(f"{returned_question_hold[0][1]} {returned_question_hold[1][0]} {returned_question_hold[0][2]} \n==================\n Your Answer: ")
+                        write_quest = f"| {returned_question_hold[0][1]} {returned_question_hold[1][0]} {returned_question_hold[0][2]} | Your answer: {question_answer}\n"
+                        write_question(write_quest)
+                        right_or_no = question.check_answer(returned_question_hold[0], returned_question_hold[1], question_answer)
+                    else:
+                        print("no skill, can't answer any questions? had to use the config to skip questions.")
+                        right_or_no = True
+                    # below is code to doing stuff if the answer is right or not.
+                    if(right_or_no):
+                        GameState.set_state('questions_answered', GameState.get_state('questions_answered') + 1)
+                        if(GameState.get_state('questions_answered') >= GameState.get_state('total_questions')):
+                            print(f"GG!")
+                        else:
+                            print(f"Good Job! {GameState.get_state('total_questions') - GameState.get_state('questions_answered')} questions remaining!")
+                        # drop a weapon.
+                        global_weapon = drop_weapon()
+                        GameState.set_state('weapon_has', True)
+                        # check if the player has answered all the questions, this means there are no one left in the game expect for the player!!!
+                        if GameState.get_state('questions_answered') >= GameState.get_state('total_questions'):
+                            print("\n=== VICTORY ROYALE! ===")
+                            print(config.get_messages()[1][random.randint(0, len(config.get_messages()[1]) - 1)])
+                            print("=========================")
+                            while True:
+                                victory_dance(screen, player_sprite_rectangle.x, player_sprite_rectangle.y)
+                        else:
+                            GameState.set_state('spawn_enemy', True)
+                    else:
+                        # wrong answer, "crash" the game
+                        exit(1)
+                else:
+                    screen.blit(currently[0], currently[1])
+        else:
+            if(GameState.get_state('spawn_enemy')):
+                currently = AssetManagement.better_bad_guy_generator()
+                question_hold = ["0","0","0"]
+                GameState.set_state('spawn_enemy', False)
+        if(game_start and GameState.get_state('get_bad_guy')):
+            currently = AssetManagement.better_bad_guy_generator()
+            currently[1].x = 500
+            question_hold = ["0","0","0"]
+            GameState.set_state('get_bad_guy', False)
+        if(GameState.get_state('weapon_has') and global_weapon != None and not GameState.get_state('hand')):
+            # print(f"{weapon_has} | {global_weapon}")
+            local_weapon = pygame.image.load('guns/' + global_weapon)
+            local_weapon_rect = local_weapon.get_rect()
+            #  365, 210 <-- in ground
+            #  75, 205 <-- Hand
+            local_weapon_rect.x = 365
+            local_weapon_rect.y = 220 # floating, all images have different res, so this will be a issue.
+            # maybe resize other images to the same size? that would be much better and it will fix some image position issues.
+            screen.blit(local_weapon, local_weapon_rect)
+            pygame.display.update()
+            right_or_no = False
+            currently = None
+            while(local_weapon_rect.x <= 365 and local_weapon_rect.x > player_sprite_rectangle.x):
+                local_weapon_rect.x -= 1
+                screen.blit(main_background, (0, 0))
+                screen.blit(player_sprite[0], player_sprite_rectangle)
+                screen.blit(local_weapon, local_weapon_rect)
+                current_map = get_current_map(GameState.get_state('questions_answered'))
+                screen.blit(current_map, (400, 0))
+                players_remain = font.render(PLAYER_COUNTS.get(GameState.get_state('questions_answered'), "100"), True, (255,255,255))
+                screen.blit(player_counter, (402, 100))
+                screen.blit(players_remain, (420, 100))
+                pygame.display.update()
+                if(local_weapon_rect.x == player_sprite_rectangle.x):
+                    GameState.set_state('hand', True)
+        if(GameState.get_state('hand')):
+            # If the weapon is at the player's hand.
+            currently = AssetManagement.better_bad_guy_generator()
+            currently[1].x = 500
+            local_weapon = pygame.image.load('guns/' + global_weapon)
+            local_weapon_rect = local_weapon.get_rect()
+            local_weapon_rect.x = player_sprite_rectangle.x
+            local_weapon_rect.y = 207
+            screen.blit(local_weapon, local_weapon_rect)
+            current_weapon = local_weapon
+            current_weapon_rect = local_weapon_rect
+            inventory.append(local_weapon)
+            inventory.append(local_weapon_rect)
+            GameState.set_state('hand', False)
+            GameState.set_state('weapon_has', False)
+            global_weapon = None
+            GameState.set_state('spawn_enemy', True)
+
+        # the player count renderer
+        if(GameState.get_state('player_joined')):
+            current_map = get_current_map(GameState.get_state('questions_answered'))
+            players_remain = font.render(PLAYER_COUNTS.get(GameState.get_state('questions_answered'), "100"), True, (255,255,255))
+            screen.blit(players_remain, (420, 100))
+            screen.blit(player_counter, (402, 100))
+            # again based on the questions answered, the map will change.
+            screen.blit(current_map, (400, 0))
+        # global renderer for the weapon.
+        if current_weapon and current_weapon_rect:
+            screen.blit(current_weapon, current_weapon_rect)
+        utils.fps_counter(clock, screen, font)
+        pygame.display.update() #universal display refresh update()
+    #if(multiplayer and not_connected):
+    #    print(f"Connecting to {server_ip}:{server_port}")
+    #    if(packets.connect(server_ip, server_port, session_id, username)):
+    #        print(f"Connected to {server_ip}:{server_port}!")
+    #        not_connected = False # connected now

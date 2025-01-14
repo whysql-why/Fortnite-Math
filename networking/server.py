@@ -1,7 +1,7 @@
 import socket, time
 
 server_ip = '0.0.0.0'
-server_port = 48185
+server_port = 25565
 
 server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # new socket.
 server_sock.bind((server_ip, server_port))

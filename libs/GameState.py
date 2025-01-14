@@ -12,7 +12,8 @@ state = {
     'question_hold': ["0","0","0"],
     'questions_answered': 0,
     'total_questions': 8,
-    'jumping': False
+    'jumping': False,
+    'multiplayer_var': False
 }
 
 def reset_game_state():
