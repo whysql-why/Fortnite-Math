@@ -29,14 +29,21 @@ while True:
     data = client_sock.recv(1024) # only up to 1026 bytes accepted
     if data:
         packet_extract = data.decode().split(':')
-        # print(packet_extract)
+        print("======= RAW PACKET ========\n", packet_extract, "\n===========================")
         if(packet_extract[0] == "STATUS" and packet_extract[3] == "1"):
-            print(f"{packet_extract[2]} joined the game!")
-            client_sock.send("asdasd".encode())
+            print(f"UUID of player {packet_extract[2]} is {packet_extract[1]}")
+            print(f"{packet_extract[2]} joined the game")
+            print(f"{packet_extract[2]} [/{client_addr[0]}:{client_addr[1]}] logged in")
             temp_array = [packet_extract[2], packet_extract[1]] # username and UUID
             players.append(temp_array) # add the player to the list.
         if(packet_extract[0] == "STATUS" and packet_extract[3] == "0"):
-            print(f"{packet_extract[2]} left the game!")
+            print(f"{packet_extract[2]} lost connection: player quit the game.")
+            print(f"{packet_extract[2]} left the game")
             temp_array = [packet_extract[2], packet_extract[1]]
             players.remove(temp_array) # remove the player from the list
     client_sock.close() # close
+
+
+# TO DO HERE:
+# add keep alive packet, so we will know when python crashes, and we can remove the player accordingly.
+# JUST MAKE SOLID CLIENT TO SERVER COMMUNICATION THROUGH THESE "PACKETS".

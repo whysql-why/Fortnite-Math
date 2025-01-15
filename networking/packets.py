@@ -19,7 +19,10 @@ def connect(ip, port, uuid, username):
             print(data.decode())
         return True
     except socket.error as e:
-        print(e)
+        print("==================")
+        print("Server is offline!")
+        print("==================")
+        exit(1)
         return False
 
 def send_packet(ip, port, message):
