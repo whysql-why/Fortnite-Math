@@ -22,4 +22,25 @@ username issue will never be fixed.
 - added more comments
 - uploaded code to github
 - removed random_1.py file along with its functions: random_bad_guy(), was just useless, use AssetManagement.better_bad_guy_generator() instead.
-- added more comments to each file. 
+- added more comments to each file.
+
+2025-1-5:
+- removed player thanked the bus driver
+- added dictionaries
+
+2025-1-6:
+- added small comments
+
+2025-1-7:
+- finally fixed guy_healing, and fixed gun offsets.
+- added gamestate vars in main code
+- removed testing main.py file
+- backup before gamestate breaks
+
+2025-1-14:
+- done small packet exchange tests
+- added some stuff to server.py
+- added network interaction, this will be used for multiplayer version of the game
+
+2025-1-15:
+- worked on server.py, hoping for better communication
