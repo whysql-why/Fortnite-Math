@@ -9,11 +9,11 @@ import random, sys, pygame, time, uuid, threading
 
 session_id = uuid.uuid4()
 # ============================================= 
-multiplayer = True
+multiplayer = False
 not_connected = True
 server_ip = "127.0.0.1"
 server_port = 25565
-username = "the_goat"
+username = "test"
 # ============================================= 
 # default port for Fortnite Math is 25565
 # same as minecraft
@@ -44,20 +44,20 @@ font = pygame.font.Font(None, 20) # for text
 utils.start_up(config)
 utils.image_fix()
 # backgrounds init
-intro_background = pygame.image.load( 'assets/fortnite_menu.png' ) # load
-intro_background = pygame.transform.scale( intro_background, ( 500,330 )) # scale 
+INTRO_BACKGROUND = pygame.image.load( 'assets/fortnite_menu.png' ) # load
+INTRO_BACKGROUND = pygame.transform.scale( INTRO_BACKGROUND, ( 500,330 )) # scale 
 
-main_background = pygame.image.load( 'assets/island.png' ) # load
-main_background = pygame.transform.scale( main_background, ( 500,330 )) # scale
+MAIN_BACKGROUND = pygame.image.load( 'assets/island.png' ) # load
+MAIN_BACKGROUND = pygame.transform.scale( MAIN_BACKGROUND, ( 500,330 )) # scale
 
 # victory royale
-victory_royale = pygame.image.load("assets/victory.png") # load
-victory_royale = pygame.transform.scale(victory_royale, (360, 72)) # scale
+VICTORY_ROYALE = pygame.image.load("assets/victory.png") # load
+VICTORY_ROYALE = pygame.transform.scale(VICTORY_ROYALE, (360, 72)) # scale
 
-# clouds
-clouds = pygame.image.load("assets/clouds.png") # load 
-clouds = pygame.transform.scale(clouds, (500, 150)) # scale
-clouds_x = 0
+# CLOUDS
+CLOUDS = pygame.image.load("assets/clouds.png") # load
+CLOUDS = pygame.transform.scale(CLOUDS, (500, 150)) # scale
+CLOUDS_x = 0
 
 # the TWO backbone varaibles of our game!!
 currently = None
@@ -76,15 +76,15 @@ current_weapon_rect = None
 
 
 # setup battle bus
-battle_bus = pygame.image.load('assets/battle_bus.png')
-battle_bus = pygame.transform.scale( battle_bus, (100, 100) )
-battle_bus_rectangle = battle_bus.get_rect()
-battle_bus_rectangle.x = 0
-battle_bus_rectangle.y = 0
+BATTLE_BUS = pygame.image.load('assets/battle_bus.png')
+BATTLE_BUS = pygame.transform.scale( BATTLE_BUS, (100, 100) )
+BATTLE_BUS_rectangle = BATTLE_BUS.get_rect()
+BATTLE_BUS_rectangle.x = 0
+BATTLE_BUS_rectangle.y = 0
 # bad guys vars
 
 # setup bad guys
-building_guy = pygame.image.load("bad-guys/building_guy.png")
+BUILDING_GUY = pygame.image.load("bad-guys/building_guy.png")
 guy_emote_sprite = [ # why did I think this was a good idea? pygame is so bad with this.
     pygame.image.load("assets/guy_emote_1.png"),
     pygame.image.load("assets/guy_emote_2.png")
@@ -93,27 +93,27 @@ guy_emote_sprite = [ # why did I think this was a good idea? pygame is so bad wi
 
 def victory_dance(screen, x, y):
     for sprite in guy_emote_sprite:
-        screen.blit(main_background, (0, 0))
-        screen.blit(victory_royale, (0, 0))
+        screen.blit(MAIN_BACKGROUND, (0, 0))
+        screen.blit(VICTORY_ROYALE, (0, 0))
         sprite = pygame.transform.scale(sprite, (100, 100))
         screen.blit(sprite, (x, y))
         pygame.display.update()
         time.sleep(0.25) # delay or it not look like emoting.
 
 
-buiding_guy = pygame.image.load("bad-guys/building_guy.png")
-guy_healing = pygame.image.load("bad-guys/guy_healing.png")
-heal_guy = pygame.image.load("bad-guys/heal_guy.png")
-l_camper = pygame.image.load("bad-guys/l_camper.png")
-l_camper_2 = pygame.image.load("bad-guys/l_camper_2.png")
-pickaxe_guy = pygame.image.load("bad-guys/pickaxe_guy.png")
-revolver_guy = pygame.image.load("bad-guys/revolver_guy.png")
-shotgun_guy = pygame.image.load("bad-guys/shotgun_guy.png")
-team_guy = pygame.image.load("bad-guys/team_guy.png")
-teamers_in_solos = pygame.image.load("bad-guys/teamers_in_solos.png")
-tree_guy = pygame.image.load("bad-guys/tree_guy.png")
-truck_guy = pygame.image.load("bad-guys/truck_guy.png")
-# guy_healing = pygame.transform.scale( guy_healing, (100, 100) ) <-- Is there an issue with this? It's rendering weirdly onto the screen, the position is not right?
+building_guy = pygame.image.load("bad-guys/BUILDING_GUY.png")
+GUY_HEALING = pygame.image.load("bad-guys/GUY_HEALING.png")
+HEAL_GUY = pygame.image.load("bad-guys/HEAL_GUY.png")
+L_CAMPER = pygame.image.load("bad-guys/L_CAMPER.png")
+L_CAMPER_2 = pygame.image.load("bad-guys/L_CAMPER_2.png")
+PICKAXE_GUY = pygame.image.load("bad-guys/PICKAXE_GUY.png")
+REVOLVER_GUY = pygame.image.load("bad-guys/REVOLVER_GUY.png")
+SHOTGUN_GUY = pygame.image.load("bad-guys/SHOTGUN_GUY.png")
+TEAM_GUY = pygame.image.load("bad-guys/TEAM_GUY.png")
+TEAMERS_IN_SOLOS = pygame.image.load("bad-guys/TEAMERS_IN_SOLOS.png")
+TREE_GUY = pygame.image.load("bad-guys/TREE_GUY.png")
+TRUCK_GUY = pygame.image.load("bad-guys/TRUCK_GUY.png")
+# GUY_HEALING = pygame.transform.scale( GUY_HEALING, (100, 100) ) <-- Is there an issue with this? It's rendering weirdly onto the screen, the position is not right?
 
 # map vars
 map_100 = pygame.image.load("assets/map/100.png")
@@ -211,7 +211,7 @@ while True:
 
         # this is the "Fortnite" loading screen.
         if not GameState.get_state('game_ready'):
-            screen.blit( intro_background, ( 0, 0 ) )
+            screen.blit( INTRO_BACKGROUND, ( 0, 0 ) )
         if player_jumping_question:
             draw_player_jumping_var[0] = "True"
             player_jumping_question = False
@@ -224,7 +224,7 @@ while True:
                 exit(1)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    jump = utils.check_jump(event, GameState.get_state('game_ready'), GameState.get_state('bus_starting'), GameState.get_state('jumping'), battle_bus_rectangle, pygame, config, data, screen, main_background)
+                    jump = utils.check_jump(event, GameState.get_state('game_ready'), GameState.get_state('bus_starting'), GameState.get_state('jumping'), BATTLE_BUS_rectangle, pygame, config, data, screen, MAIN_BACKGROUND)
                     if jump[0]:
                         GameState.set_state('game_ready', True)
                     if jump[1]:
@@ -239,20 +239,20 @@ while True:
         # after it has moved to the end, print END.
 
         if(GameState.get_state('background')):
-            screen.blit(main_background, (0, 0))
+            screen.blit(MAIN_BACKGROUND, (0, 0))
 
         # below is the code to make the bus move to the end of the screen
         # after it has moved to the end, print END.
         if GameState.get_state('game_ready') and GameState.get_state('bus_starting'):
             GameState.set_state('background', True)
-            battle_bus_rectangle.x = battle_bus_rectangle.x + 1
-            clouds_x -= 1
-            if clouds_x <= -500:
-                clouds_x = 500
-            screen.blit(clouds, (clouds_x, 0)) # draw first clouds
-            screen.blit(clouds, (clouds_x + 500, 0)) # draw second clouds
-            screen.blit(battle_bus, battle_bus_rectangle)
-            if (battle_bus_rectangle.x == 500):
+            BATTLE_BUS_rectangle.x = BATTLE_BUS_rectangle.x + 1
+            CLOUDS_x -= 1
+            if CLOUDS_x <= -500:
+                CLOUDS_x = 500
+            screen.blit(CLOUDS, (CLOUDS_x, 0)) # draw first CLOUDS
+            screen.blit(CLOUDS, (CLOUDS_x + 500, 0)) # draw second CLOUDS
+            screen.blit(BATTLE_BUS, BATTLE_BUS_rectangle)
+            if (BATTLE_BUS_rectangle.x == 500):
                 data.write("Bus is off the screen.", "log.txt")
                 if(config.get_config()[0]['log-everything']):
                     print("End") # no longer jump.
@@ -364,7 +364,7 @@ while True:
             currently = None
             while(local_weapon_rect.x <= 365 and local_weapon_rect.x > player_sprite_rectangle.x):
                 local_weapon_rect.x -= 1
-                screen.blit(main_background, (0, 0))
+                screen.blit(MAIN_BACKGROUND, (0, 0))
                 screen.blit(player_sprite[0], player_sprite_rectangle)
                 screen.blit(local_weapon, local_weapon_rect)
                 current_map = get_current_map(GameState.get_state('questions_answered'))
