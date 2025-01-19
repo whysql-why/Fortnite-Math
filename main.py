@@ -83,10 +83,7 @@ BATTLE_BUS = pygame.transform.scale( BATTLE_BUS, (100, 100) )
 BATTLE_BUS_rectangle = BATTLE_BUS.get_rect()
 BATTLE_BUS_rectangle.x = 0
 BATTLE_BUS_rectangle.y = 0
-# bad guys vars
 
-# setup bad guys
-BUILDING_GUY = pygame.image.load("bad-guys/building_guy.png")
 guy_emote_sprite = [ # why did I think this was a good idea? pygame is so bad with this.
     pygame.image.load("assets/guy_emote_1.png"),
     pygame.image.load("assets/guy_emote_2.png")
@@ -102,8 +99,8 @@ def victory_dance(screen, x, y):
         pygame.display.update()
         time.sleep(0.25) # delay or it not look like emoting.
 
-
-building_guy = pygame.image.load("bad-guys/BUILDING_GUY.png")
+# setup bad guys
+BUILDING_GUY = pygame.image.load("bad-guys/building_guy.png")
 GUY_HEALING = pygame.image.load("bad-guys/GUY_HEALING.png")
 HEAL_GUY = pygame.image.load("bad-guys/HEAL_GUY.png")
 L_CAMPER = pygame.image.load("bad-guys/L_CAMPER.png")

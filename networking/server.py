@@ -13,6 +13,7 @@ print(f"You need to configure your firewall to allow connections from port {serv
 print("Or else, only local connections are accepted.")
 
 # print("Server will now begin in 5 seconds.")
+time.sleep(5)
 for j in range(10):
     print(" \n ")
 for i in range(5):
@@ -21,7 +22,8 @@ for i in range(5):
     for j in range(10):
         print(" \n ")
 print("Server started!")
-
+print("[!] Warning this is a VERY early version of the server.")
+print("[!] Stuff will go wrong!")
 players = []
 
 while True:
