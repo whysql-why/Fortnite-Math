@@ -3,7 +3,7 @@ import os
 from libs import utils
 # os.system("pip install pyyaml")
 # os.system("pip install pillow")
-from libs import data, question, config, AssetManagement, GameState, Anticheat
+from libs import data, question, config, AssetManagement, GameState, Anticheat, sql
 from networking import packets
 import random, sys, pygame, time, uuid, threading
 
@@ -43,6 +43,8 @@ font = pygame.font.Font(None, 20) # for text
 
 utils.start_up(config)
 utils.image_fix()
+if(sql.check_if_first_time()):
+    sql.setup() # setup if the database does not exist.
 # backgrounds init
 INTRO_BACKGROUND = pygame.image.load( 'assets/fortnite_menu.png' ) # load
 INTRO_BACKGROUND = pygame.transform.scale( INTRO_BACKGROUND, ( 500,330 )) # scale 
@@ -327,9 +329,16 @@ while True:
                         GameState.set_state('weapon_has', True)
                         # check if the player has answered all the questions, this means there are no one left in the game expect for the player!!!
                         if GameState.get_state('questions_answered') >= GameState.get_state('total_questions'):
+                            sql.add_wins(1) # add a win.
+                            wins, loses = sql.get_data()
+                            winlose = sql.get_ratio()
                             print("\n=== VICTORY ROYALE! ===")
                             print(config.get_messages()[1][random.randint(0, len(config.get_messages()[1]) - 1)])
-                            print("=========================")
+                            print("┌=======================┐")
+                            print(f"| WINS: {wins}          |")
+                            print(f"| LOSES: {loses}        |")
+                            print(f"| W/L: {winlose}        |")
+                            print("└=======================┘")
                             while True:
                                 victory_dance(screen, player_sprite_rectangle.x, player_sprite_rectangle.y)
                         else:

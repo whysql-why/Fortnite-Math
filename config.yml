@@ -6,7 +6,7 @@ debug:
   log-everything: false # way cleaner way, when combined with everything else is "False".
   question-answer-log-before: false # added.
   log-previous-questions: false # not added yet
-  skip-questions: false # skips all questions, for testing purposes.
+  skip-questions: true # skips all questions, for testing purposes.
 
 
 # If all of them are false, then a random one
