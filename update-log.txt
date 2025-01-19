@@ -1,7 +1,7 @@
 update log for this project.
 
 To Do:
-- SQL database for user stats
+- nothing
 
 
 2024-12-25:
@@ -42,3 +42,6 @@ To Do:
 
 2025-1-15:
 - worked on server.py, hoping for better communication
+
+2025-1-19:
+- added sql database support for wins and losses management.
